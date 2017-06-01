@@ -1,109 +1,100 @@
 package assignment2;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TreeTest {
+
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     
     public Tree tree;
-    public Tree nullTree;
-    
-    public TreeTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
     
     @Before
     public void setUp() {
+        System.setOut(new PrintStream(outContent));
         this.tree = new Tree(16);
-        tree.addNode(9, 16, Boolean.TRUE);
-        tree.addNode(18, 16, Boolean.FALSE);
-        tree.addNode(3, 9, Boolean.TRUE);
-        tree.addNode(14, 9, Boolean.FALSE);
-        tree.addNode(19, 18, Boolean.FALSE);
-        tree.addNode(1, 3, Boolean.TRUE);
-        tree.addNode(5, 3, Boolean.FALSE);
-        this.nullTree = null;
+        tree.addNode(9, 16, true);
+        tree.addNode(18, 16, false);
+        tree.addNode(3, 9, true);
+        tree.addNode(14, 9, false);
+        tree.addNode(19, 18, false);
+        tree.addNode(1, 3, true);
+        tree.addNode(5, 3, false);
     }
     
     @After
-    public void tearDown() {
+    public void cleanUp() {
+        System.setOut(null);
     }
 
     @Test
     public void testGetAncestors5() {
-        System.out.println("getAncestors5");
-        int key = 5;
-        ArrayList<Integer> expResult = new ArrayList<>();
-        expResult.add(3);
-        expResult.add(9);
-        expResult.add(16);
-        ArrayList<Integer> result = this.tree.getAncestors(key);
-        assertEquals("Ancestors of 5", expResult, result);
+        List<Integer> result = this.tree.getAncestors(5);
+        assertEquals("Ancestors of 5", Arrays.asList(3, 9, 16), result);
     }
     
     @Test
     public void testGetAncestorsRoot() {
-        System.out.println("getAncestorsRoot");
-        int key = 16;
-        ArrayList<Integer> expResult = new ArrayList<>();
-        ArrayList<Integer> result = this.tree.getAncestors(key);
-        assertEquals("Ancestors of the root", expResult, result);
+        List<Integer> result = this.tree.getAncestors(16);
+        assertEquals("Ancestors of the root", Arrays.asList(), result);
     }
 
-    @Test (expected = KeyNotFoundException.class)
+    @Test (expected = IllegalArgumentException.class)
     public void testGetAncestorsNonexistent() {
-        System.out.println("getAncestorsNonexistent");
-        int key = 12;
-        this.tree.getAncestors(key);
+        this.tree.getAncestors(12);
+    }
+    
+    @Test
+    public void testPrintAncestors5() {
+        this.tree.printAncestors(5);
+        assertEquals("3 9 16 ", outContent.toString());
+    }
+    
+    @Test
+    public void testPrintAncestorsRoot() {
+        this.tree.printAncestors(16);
+        assertEquals("", outContent.toString());
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testPrintAncestorsNonexistent() {
+        this.tree.printAncestors(12);
+        assertEquals("", outContent.toString());
     }
     
     @Test
     public void testGetLowestCommonAncestor514() {
-        System.out.println("getLowestCommonAncestor514");
-        int key1 = 5;
-        int key2 = 14;
-        Optional<Integer> expResult = Optional.of(9);
-        Optional<Integer> result = this.tree.getLowestCommonAncestor(key1, key2);
-        assertEquals("Lowest common ancestor of 5 and 14", expResult, result);
+        Optional<Integer> result = this.tree.getLowestCommonAncestor(5, 14);
+        assertEquals("Lowest common ancestor of 5 and 14", Optional.of(9), result);
     }
     
     @Test
     public void testGetLowestCommonAncestor145() {
-        System.out.println("getLowestCommonAncestor145");
-        int key1 = 14;
-        int key2 = 5;
-        Optional<Integer> expResult = Optional.of(9);
-        Optional<Integer> result = this.tree.getLowestCommonAncestor(key1, key2);
-        assertEquals("Lowest common ancestor of 14 and 5", expResult, result);
+        Optional<Integer> result = this.tree.getLowestCommonAncestor(14, 5);
+        assertEquals("Lowest common ancestor of 14 and 5", Optional.of(9), result);
     }
     
     @Test
     public void testGetLowestCommonAncestorSame() {
-        System.out.println("getLowestCommonAncestorSame");
-        int key1 = 14;
-        int key2 = 14;
-        Optional<Integer> expResult = Optional.of(9);
-        Optional<Integer> result = this.tree.getLowestCommonAncestor(key1, key2);
-        assertEquals("Lowest common ancestor of 14 and 14", expResult, result);
+        Optional<Integer> result = this.tree.getLowestCommonAncestor(14, 14);
+        assertEquals("Lowest common ancestor of a node and itself", Optional.of(9), result);
     }
     
-    @Test (expected = KeyNotFoundException.class)
+    @Test
+    public void testGetLowestCommonAncestorChild() {
+        Optional<Integer> result = this.tree.getLowestCommonAncestor(9, 14);
+        assertEquals("Lowest common ancestor of a child and its parent", Optional.of(16), result);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
     public void testGetLowestCommonAncestorNonexistent() {
-        System.out.println("getLowestCommonAncestorNonexistent");
-        int key1 = 14;
-        int key2 = 11;this.tree.getLowestCommonAncestor(key1, key2);
+        this.tree.getLowestCommonAncestor(14, 11);
     }
 }
