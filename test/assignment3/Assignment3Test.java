@@ -5,25 +5,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class Assignment3Test {
     
     private static final int HEIGHT = 2;
     private static final int WIDTH = 3;
-    private static final char[][] GRID = new char[HEIGHT][WIDTH];
-    
-    @BeforeClass
-    public static void setUpClass() {
-        Assignment3Test.GRID[0][0] = 'a';
-        Assignment3Test.GRID[0][1] = 'a';
-        Assignment3Test.GRID[0][2] = 'r';
-        
-        Assignment3Test.GRID[1][0] = 't';
-        Assignment3Test.GRID[1][1] = 'c';
-        Assignment3Test.GRID[1][2] = 'd';
-    }
+    private static final char[][] GRID = {{'a', 'a', 'r'}, {'t', 'c', 'd'}};
 
     @Test
     public void testFindWordsGeneric() {
@@ -48,7 +36,7 @@ public class Assignment3Test {
         System.out.println("testFindWordsVisitedOrder");
         Dictionary dict = new Dictionary(Arrays.asList("car", "card", "cart", "cat", "aca"));
         Set<String> result = Assignment3.findWords(GRID, WIDTH, HEIGHT, dict);
-        Assert.assertEquals("Two Hits", result,
+        Assert.assertEquals("Visited Order", result,
                 new HashSet<>(Arrays.asList("car", "card", "cat", "aca")));
     }
     
@@ -66,8 +54,7 @@ public class Assignment3Test {
         System.out.println("testFindWordsEmptyDict");
         Dictionary dict = new Dictionary(new ArrayList<>());
         Set<String> result = Assignment3.findWords(GRID, WIDTH, HEIGHT, dict);
-        Assert.assertEquals("Empty Dict", result,
-                new HashSet<>());
+        Assert.assertEquals("Empty Dict", result, new HashSet<>());
     }
     
     @Test
@@ -77,5 +64,21 @@ public class Assignment3Test {
         Set<String> result = Assignment3.findWords(GRID, WIDTH, HEIGHT, dict);
         Assert.assertEquals("Empty String", result,
                new HashSet<>(Arrays.asList("car", "card", "cat")));
+    }
+    
+    @Test
+    public void testFindWordsNoWOrdsFound() {
+        System.out.println("testFindWordsNoWordsFound");
+        Dictionary dict = new Dictionary(Arrays.asList("adat", "radt"));
+        Set<String> result = Assignment3.findWords(GRID, WIDTH, HEIGHT, dict);
+        Assert.assertEquals("No Words Found", result, new HashSet<>());
+    }
+    
+    @Test
+    public void testFindWordsEmptyGrid() {
+        System.out.println("testFindWordsEmptyGrid");
+        Dictionary dict = new Dictionary(Arrays.asList("car", "card", "cart", "cat", "dart"));
+        Set<String> result = Assignment3.findWords(null, 0, 0, dict);
+        Assert.assertEquals("Empty Grid", result, new HashSet<>());
     }
 }
