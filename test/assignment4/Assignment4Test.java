@@ -25,6 +25,12 @@ public class Assignment4Test {
         private final int width;
         private final boolean[][] map;
         
+        /**
+         * Reads a binary image, stores its width and height and the images as a boolean[][].
+         * 
+         * @param filename image's file name with path to it included
+         * @throws IOException image not found
+         */
         public Map(String filename) throws IOException {
             BufferedImage img = ImageIO.read(new File(filename));
             this.height = img.getHeight();
@@ -50,6 +56,9 @@ public class Assignment4Test {
         }
     }
     
+    /**
+     * Creates a list of maps from the list of image names.
+     */
     @BeforeClass
     public static void setUpClass() {
         for (String img : IMAGE_LIST) {
@@ -61,6 +70,9 @@ public class Assignment4Test {
         }
     }
 
+    /**
+     * Tests the 2 countIsland functions on all images.
+     */
     @Test
     public void testCountIslands() {
         int n = MAPS.size();

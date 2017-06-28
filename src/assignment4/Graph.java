@@ -2,6 +2,9 @@ package assignment4;
 
 import java.util.ArrayList;
 
+/**
+ * Neighbor list representation of an undirected graph.
+ */
 public class Graph {
     
     private static class GraphNode {
@@ -40,6 +43,7 @@ public class Graph {
     public Graph() {
         this.nodes = new ArrayList<>();
         this.nodes.add(0, new GraphNode(0));
+        // 0 - default ("no label") value, no need to process it
         this.nodes.get(0).setVisited();
     }
     
@@ -52,20 +56,32 @@ public class Graph {
         this.nodes.get(id2).addNeighbour(this.nodes.get(id1));
     }
     
-    private void depthFisrtSearch(GraphNode node) {
+    /**
+     * Recursive depth first search on a connected component of the graph.
+     * 
+     * @param node 
+     */
+    private void depthFirstSearch(GraphNode node) {
         node.setVisited();
         for (GraphNode neighbour : node.getNeighbours()) {
             if (!neighbour.isVisited()) {
-                this.depthFisrtSearch(neighbour);
+                this.depthFirstSearch(neighbour);
             }
         }
     }
     
+    /**
+     * Computes the number of connected components of the graph by counting the
+     * number of the reinitializations of the depth first searches required to traverse
+     * the whole graph.
+     * 
+     * @return total number of connected components of the graph
+     */
     public int noOfConnectedComponents() {
         int no = 0;
         for (GraphNode node : this.nodes) {
             if (!node.isVisited()) {
-                this.depthFisrtSearch(node);
+                this.depthFirstSearch(node);
                 no++;
             }
         }
