@@ -10,10 +10,7 @@ public class ParkingLotTest {
     @Test
     public void testRearrangementPlan0() {
         System.out.println("RearrangementPlan0");
-        int[] initialMap = {1, 2, 0, 3};
-        int[] desiredMap = {3, 1, 2, 0};
-        ParkingLot pl = new ParkingLot(initialMap);
-        assertEquals(new ParkingLot(initialMap).rearrange(desiredMap),
+        assertEquals(new ParkingLot(new int[]{1, 2, 0, 3}).rearrange(new int[]{3, 1, 2, 0}),
                 Arrays.asList(
                         new Movement(1, 0, 2),
                         new Movement(3, 3, 0),
@@ -25,10 +22,7 @@ public class ParkingLotTest {
     @Test
     public void testRearrangementPlan1() {
         System.out.println("RearrangementPlan1");
-        int[] initialMap = {1, 2, 0, 3};
-        int[] desiredMap = {0, 1, 3, 2};
-        ParkingLot pl = new ParkingLot(initialMap);
-        assertEquals(new ParkingLot(initialMap).rearrange(desiredMap),
+        assertEquals(new ParkingLot(new int[]{1, 2, 0, 3}).rearrange(new int[]{0, 1, 3, 2}),
                 Arrays.asList(
                         new Movement(2, 1, 2),
                         new Movement(1, 0, 1),
@@ -40,10 +34,7 @@ public class ParkingLotTest {
     @Test
     public void testRearrangementPlan2() {
         System.out.println("RearrangementPlan2");
-        int[] initialMap = {0, 1, 2, 3};
-        int[] desiredMap = {1, 2, 3, 0};
-        ParkingLot pl = new ParkingLot(initialMap);
-        assertEquals(new ParkingLot(initialMap).rearrange(desiredMap),
+        assertEquals(new ParkingLot(new int[]{0, 1, 2, 3}).rearrange(new int[]{1, 2, 3, 0}),
                 Arrays.asList(
                         new Movement(1, 1, 0),
                         new Movement(2, 2, 1),
@@ -53,29 +44,21 @@ public class ParkingLotTest {
     @Test
     public void testRearrangementPlan3() {
         System.out.println("RearrangementPlan3");
-        int[] initialMap = {3, 1, 0, 2};
-        int[] desiredMap = {0, 1, 3, 2};
-        ParkingLot pl = new ParkingLot(initialMap);
-        assertEquals(new ParkingLot(initialMap).rearrange(desiredMap),
+        assertEquals(new ParkingLot(new int[]{3, 1, 0, 2}).rearrange(new int[]{0, 1, 3, 2}),
                 Arrays.asList(new Movement(3, 0, 2)));
     }
     
     @Test
     public void testRearrangementPlanIdenticalMaps() {
         System.out.println("RearrangementPlanIdenticalMaps");
-        int[] initialMap = {3, 0, 2, 1};
-        int[] desiredMap = {3, 0, 2, 1};
-        ParkingLot pl = new ParkingLot(initialMap);
-        assertEquals(new ParkingLot(initialMap).rearrange(desiredMap),
+        assertEquals(new ParkingLot(new int[]{3, 0, 2, 1}).rearrange(new int[]{3, 0, 2, 1}),
                 new ArrayList<>());
     }
     
     @Test
     public void testRearrangementPlanEmpty() {
         System.out.println("RearrangementPlanEmpty");
-        int[] initialMap = {};
-        int[] desiredMap = {};
-        assertEquals(new ParkingLot(initialMap).rearrange(desiredMap),
+        assertEquals(new ParkingLot(new int[]{}).rearrange(new int[]{}),
                 new ArrayList<>());
     }
     
